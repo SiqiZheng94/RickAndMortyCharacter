@@ -1,8 +1,10 @@
 package com.example.rickandmortycharacter;
 
 import jakarta.websocket.server.PathParam;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,10 +49,12 @@ public class CharacterController {
                         .get()
                         .uri("https://rickandmortyapi.com/api/character/"+id)
                         .retrieve()
+                        .onStatus(HttpStatusCode::is4xxClientError,response-> Mono.empty())
                         .toEntity(Character.class)
                         .block()
         ).getBody();
-        return character;
+            return character;
+
     }
     @GetMapping("/search")
     public List<Character> searchByStatus(@RequestParam String status){
