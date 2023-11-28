@@ -1,6 +1,7 @@
 package com.example.rickandmortycharacter;
 
 import jakarta.websocket.server.PathParam;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -13,7 +14,13 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/characters")
+@RequiredArgsConstructor
 public class CharacterController {
+    private final CharacterService service;
+    @GetMapping("/get2")
+    public Character get2(){
+        return service.getCharacter();
+    }
 
     @GetMapping("/test")
     public List<Result> test(){
